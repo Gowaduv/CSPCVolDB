@@ -1,9 +1,29 @@
 require 'optparse'
 namespace :schedule do |args|
 
+  # must not use any spaces in the submission
   desc "Create schedule entries for recurring events"
   task :create_recurring, [:from_date] => :environment do |task, args|
-    start_date = args[:from_date] || Date.today
+    options = {}
+    optparse = OptionParser.new(args) do |opts|
+      opts.on("--from_date {from_date}", "Date to start creating Schedules") do |from_date|
+        options[:from_date] = from_date
+      end
+      opts.on("-e", "--event_id {event_id}", "Event to create Schedules for") do |event_id|
+        options[:event_id] = event_id
+      end
+      opts.on("-c","--calendar_id {calendar_id}", "Calendar to create Schedules for") do |calendar_id|
+        options[:calendar_id] = calendar_id
+      end
+    end
+    begin 
+      optparse.parse!(ARGV[2..-1])
+    rescue OptionsParser::InvalidOption => e
+      puts "invalid option : e.inspect"
+    end
+
+    puts "options #{options.inspect}"
+    start_date = options[:from_date].to_date || Date.today
     end_date = start_date + 90.days
     puts "start_date is #{start_date} end_date is #{end_date}"
     events = args[:event_id] ? Event.find(args[:event_id]) :

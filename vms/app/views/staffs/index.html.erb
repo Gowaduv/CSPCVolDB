@@ -14,9 +14,9 @@
   <tbody>
     <% @staffs.each do |staff| %>
       <tr>
-        <td><%= staff.event %></td>
-        <td><%= staff.role %></td>
-        <td><%= staff.shift %></td>
+        <td><%= staff.event.name %></td>
+        <td><%= staff.position.name %></td>
+        <td><%= staff.shift.start %></td>
         <td><%= staff.permanent_user %></td>
         <td><%= link_to 'Show', staff %></td>
         <td><%= link_to 'Edit', edit_staff_path(staff) %></td>

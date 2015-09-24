@@ -13,11 +13,11 @@
 
   <div class="field">
     <%= f.label :event_id %><br>
-    <%= f.text_field :event_id %>
+    <%= f.collection_select :staff, :event_id, Event.order(:name), :id, :name %>
   </div>
   <div class="field">
-    <%= f.label :role_id %><br>
-    <%= f.text_field :role_id %>
+    <%= f.label :position_id %><br>
+    <%= f.text_field :position_id %>
   </div>
   <div class="field">
     <%= f.label :shift_id %><br>

@@ -61,8 +61,11 @@ User.create!(id: 9, username: "Teeebone", email: "teeebone@yahoo.com", member_nu
 User.create!(id: 10, username: "Mike", email: "mike@yahoo.com", member_number: "90000", password: "testing1")
 User.create!(id: 11, username: "TK", email: "tk@yahoo.com", member_number: "100000", password: "testing1")
 User.create!(id: 12, username: "Larry", email: "larry@yahoo.com", member_number: "10", password: "testing1")
+User.create!(id: 13, username: "Jan", email: "md@thecspc.org", member_number: "2", password: "password")
 
 u = User.find(1)
+u.add_role(:dir)
+u = User.find(13)
 u.add_role(:dir)
 
 u = User.find(2)

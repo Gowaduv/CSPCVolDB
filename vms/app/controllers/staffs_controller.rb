@@ -42,6 +42,6 @@ class StaffsController < ApplicationController
     end
 
     def staff_params
-      params.require(:staff).permit(:event_id, :role_id, :shift_id, :permanent_user)
+      params.require(:staff).permit(:event_id, :position_id, :shift_id, :permanent_user)
     end
 end
