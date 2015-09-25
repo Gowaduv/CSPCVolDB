@@ -1,7 +1,7 @@
 class OffersController < ApplicationController
   before_action :set_offer, only: [:show, :edit, :update, :destroy]
 
-  respond_to :html
+  respond_to :html, :js, :json
 
   def index
     @offers = Offer.all
@@ -23,7 +23,11 @@ class OffersController < ApplicationController
   def create
     @offer = Offer.new(offer_params)
     @offer.save
-    respond_with(@offer)
+    respond_to do |format|
+      format.html { respond_with(@offer) }
+      format.json { render json: @offer }
+      format.js  
+    end
   end
 
   def update
@@ -32,8 +36,19 @@ class OffersController < ApplicationController
   end
 
   def destroy
+    @schedule = @offer.schedule
+    
     @offer.destroy
-    respond_with(@offer)
+    
+    respond_to do |format|
+    
+      format.html { redirect_to action: "index" }
+    
+      format.json { head :ok }
+    
+      format.js
+    
+    end
   end
 
   private

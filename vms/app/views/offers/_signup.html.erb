@@ -1,0 +1,1 @@
+<%= link_to('Sign up', offers_path(offer: {user_id: current_user.id, schedule_id: s.id, accepted: 0} ), remote: true, method: :post, data: { confirm: "Are you sure?" }) %>

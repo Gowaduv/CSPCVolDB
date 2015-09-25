@@ -1,0 +1,2 @@
+$("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
+console.log("schedule is <%= @schedule.inspect %>")

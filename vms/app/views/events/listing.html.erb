@@ -26,12 +26,14 @@
         <td><%= s.shift.start %></td>
         <td><%= s.shift.duration.to_i %></td>
         <td><%= s.accepted_offer.user.username if s.accepted_offer %></td>
-        <td><%= if s.accepted_offer then 
-                  link_to('Cancel shift', s.accepted_offer, method: :delete, data: { confirm: 'Are you sure?' }) 
-                else 
-                  link_to('Sign up', new_offer_path(schedule_id: s.id))
-                end  
-            %>
+        <td><span id="schedule_offer_<%= s.id %>"><% if s.accepted_offer %> 
+                  <%= link_to('Cancel shift', s.accepted_offer, method: :delete, data: { confirm: 'Are you sure?' }) %> 
+                <% elsif s.offers.where(:user_id => current_user.id).present? then %>
+                  <%= render 'offers/pending', :s => s %>                   
+                <% else %>
+                  <%= render 'offers/signup', :s => s %>                 
+               <% end %>
+               </span>
         </td>
       </tr>
       <% end %>
