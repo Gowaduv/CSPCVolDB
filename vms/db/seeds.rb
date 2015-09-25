@@ -227,7 +227,7 @@ Staff.create(event_id: ppmt.id, position_id: cashier.id, shift_id: 6, permanent_
 Staff.create(event_id: ppmt.id, position_id: ec.id, shift_id: 7, permanent_user: 12)  # first shift EC
 Staff.create(event_id: ppmt.id, position_id: ec.id, shift_id: 8, permanent_user: 12)  # second shift EC
 host = Position.find_by_name("Host")
-Staff.create(event_id: ppmt.id, position_id: host.id, shift_id: 4, permanent_user: 6)  # first shift host
+Staff.create(event_id: ppmt.id, position_id: host.id, shift_id: 4, permanent_user: 11)  # first shift host
 fp = Position.find_by_name("Food Prep")
 Staff.create(event_id: ppmt.id, position_id: fp.id, shift_id: 9, permanent_user: 4)  # food prep
 setup = Position.find_by_name("Setup")

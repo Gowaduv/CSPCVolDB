@@ -2,22 +2,22 @@
 
 <p>
   <strong>Event:</strong>
-  <%= @staff.event %>
+  <%= @staff.event.name %>
 </p>
 
 <p>
   <strong>Position:</strong>
-  <%= @staff.position %>
+  <%= @staff.position.name %>
 </p>
 
 <p>
   <strong>Shift:</strong>
-  <%= @staff.shift %>
+  <%= @staff.shift.start %>
 </p>
 
 <p>
   <strong>Permanent user:</strong>
-  <%= @staff.permanent_user %>
+  <%= User.find(@staff.permanent_user).username %>
 </p>
 
 <%= link_to 'Edit', edit_staff_path(@staff) %> |

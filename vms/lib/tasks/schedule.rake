@@ -23,7 +23,7 @@ namespace :schedule do |args|
     end
 
     puts "options #{options.inspect}"
-    start_date = options[:from_date].to_date || Date.today
+    start_date = options[:from_date].nil? ? Date.today : options[:from_date].to_date
     end_date = start_date + 90.days
     puts "start_date is #{start_date} end_date is #{end_date}"
     events = args[:event_id] ? Event.find(args[:event_id]) :

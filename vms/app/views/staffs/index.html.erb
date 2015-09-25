@@ -17,7 +17,7 @@
         <td><%= staff.event.name %></td>
         <td><%= staff.position.name %></td>
         <td><%= staff.shift.start %></td>
-        <td><%= staff.permanent_user %></td>
+        <td><%= User.find(staff.permanent_user).username if staff.permanent_user %></td>
         <td><%= link_to 'Show', staff %></td>
         <td><%= link_to 'Edit', edit_staff_path(staff) %></td>
         <td><%= link_to 'Destroy', staff, method: :delete, data: { confirm: 'Are you sure?' } %></td>
