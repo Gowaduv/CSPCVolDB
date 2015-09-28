@@ -6,6 +6,9 @@ class CreateOffers < ActiveRecord::Migration
       t.integer :accepted
       t.datetime :accepted_timestamp
       t.integer :accepted_user_id
+      t.integer :denied
+      t.datetime :denied_timestamp
+      t.integer :denied_user_id
       t.integer :revoked
       t.datetime :revoke_timestamp 
       t.timestamps

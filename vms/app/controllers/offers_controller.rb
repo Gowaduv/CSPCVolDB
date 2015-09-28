@@ -31,23 +31,33 @@ class OffersController < ApplicationController
   end
 
   def update
-    @offer.update(offer_params)
-    respond_with(@offer)
+    params = offer_params
+    if params[:accepted].present? then
+      params[:accepted_id] = current_user.id
+      params[:accepted_timestamp] = Time.now
+      s = @offer.schedule
+      s.
+    elsif params[:denied].present? then
+      params[:denied_id] = current_user.id
+      params[:denied_timestamp] = Time.now
+    elsif params[:revoked].present?
+      params[:revoke_timestamp] = Time.now
+    end
+    @offer.update(params)
+    respond_to do |format|
+      format.html { redirect_to action: index }
+      format.json { head :ok }
+      format.js
+    end
   end
 
   def destroy
     @schedule = @offer.schedule
-    
     @offer.destroy
-    
     respond_to do |format|
-    
       format.html { redirect_to action: "index" }
-    
       format.json { head :ok }
-    
       format.js
-    
     end
   end
 

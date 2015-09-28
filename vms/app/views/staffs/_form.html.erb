@@ -12,20 +12,20 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :event_id %><br>
-    <%= f.collection_select :staff, :event_id, Event.order(:name), :id, :name %>
+    <%= f.label :event %><br>
+    <%= f.collection_select(:event, Event.order(:name), :id, :name) %>
   </div>
   <div class="field">
-    <%= f.label :position_id %><br>
-    <%= f.text_field :position_id %>
+    <%= f.label :position %><br>
+    <%= f.collection_select(:position, Position.order(:name), :id, :name) %>
   </div>
   <div class="field">
-    <%= f.label :shift_id %><br>
-    <%= f.text_field :shift_id %>
+    <%= f.label :shift %><br>
+    <%= f.collection_select(:shift, Shift.order(:start, :duration), :id, :start_with_duration) %>
   </div>
   <div class="field">
     <%= f.label :permanent_user %><br>
-    <%= f.number_field :permanent_user %>
+    <%= f.collection_select(:user, Users.qualified(), :id, :username) %>
   </div>
   <div class="actions">
     <%= f.submit %>
