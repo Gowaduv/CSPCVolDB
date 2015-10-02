@@ -1,10 +1,15 @@
 class SchedulesController < ApplicationController
-  before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user!
+  load_and_authorize_resource
 
   respond_to :html
 
   def index
-    @schedules = Schedule.order(:date)
+    if (params[:user_id]) then
+      @schedules = User.find(params[:user_id]).schedules
+    else
+      @schedules = Schedule.order(:date)
+    end
     respond_with(@schedules)
   end
 

@@ -1,10 +1,15 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user!
+  load_and_authorize_resource
 
   respond_to :html, :js, :json
 
   def index
-    @offers = Offer.all
+    if (params[:user_id]) then
+      @offers = User.find(params[:user_id]).offers
+    else
+      @offers = Offer.all
+    end
     respond_with(@offers)
   end
 
@@ -36,12 +41,16 @@ class OffersController < ApplicationController
       params[:accepted_id] = current_user.id
       params[:accepted_timestamp] = Time.now
       s = @offer.schedule
-      s.
+      s.offer_id = self.id
+      s.save
     elsif params[:denied].present? then
       params[:denied_id] = current_user.id
       params[:denied_timestamp] = Time.now
     elsif params[:revoked].present?
       params[:revoke_timestamp] = Time.now
+      s = @offer.schedule
+      s.offer_id = nil
+      s.save
     end
     @offer.update(params)
     respond_to do |format|

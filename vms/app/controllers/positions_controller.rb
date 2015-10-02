@@ -1,11 +1,24 @@
 class PositionsController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
- 
+  respond_to :html, :js
+   
   # GET /positions
   # GET /positions.json
   def index
-    
+    if (params[:user_id])
+      @positions = User.find(params[:user_id]).positions
+     end    
+  end
+
+  # returns a list of users qualified for input position
+  def qualified_users
+    @users = Position.find(params[:position_id]).users
+    Rails.logger.error("returning @users #{@users.inspect} for qualified_users")
+    respond_to do |format|
+      format.html
+      format.js
+    end         
   end
 
   # GET /positions/1

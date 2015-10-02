@@ -1,10 +1,15 @@
 class QualificationsController < ApplicationController
-  before_action :set_qualification, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user!
+  load_and_authorize_resource
 
   respond_to :html
 
   def index
-    @qualifications = Qualification.all
+    if (params[:user_id]) then
+      @qualifications = User.find(params[:user_id]).qualifications
+    else
+      @qualifications = Qualification.all
+    end
     respond_with(@qualifications)
   end
 

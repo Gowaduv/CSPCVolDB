@@ -1,30 +1,6 @@
 <h1>Listing qualifications</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Position</th>
-      <th>Status</th>
-      <th>Count</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @qualifications.each do |qualification| %>
-      <tr>
-        <td><%= qualification.user %></td>
-        <td><%= qualification.position %></td>
-        <td><%= qualification.status %></td>
-        <td><%= qualification.count %></td>
-        <td><%= link_to 'Show', qualification %></td>
-        <td><%= link_to 'Edit', edit_qualification_path(qualification) %></td>
-        <td><%= link_to 'Destroy', qualification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'list' %>
 
 <br>
 

@@ -11,7 +11,17 @@ Rails.application.routes.draw do
   root 'pages#home'
   resources :positions
   resources :events
-  resources :users
+  shallow do
+    resources :users do
+      resources :positions
+      resources :schedules
+      resources :offers
+      resources :qualifications
+    end
+  end
+  resources :positions do
+    get 'qualified_users'
+  end
   get 'calendar_events' => 'events#calendar_events'    
   get 'listing' => 'events#listing'
 

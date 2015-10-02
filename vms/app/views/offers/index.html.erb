@@ -1,35 +1,6 @@
 <h1>Listing offers</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Date</th>
-      <th>Start</th>
-      <th>Position</th>
-      <th>Permanent</th>
-      <th>Accepted</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @offers.each do |offer| %>
-      <tr>
-        <td><%= offer.user.username %></td>
-        <td><%= offer.schedule.date.to_date %></td>
-        <td><%= offer.schedule.shift.start %></td>
-        <td><%= offer.schedule.position.name %></td>
-        <td><% if offer.schedule.staff.permanent_user == offer.user.id %><%= link_to 'True', offer.schedule.staff %><% else %> False<% end %></td>
-        <td><%= offer.accepted == 1 ? "True" : "False" %></td>
-        <td><%= link_to 'Accept', offer_path(offer, offer: { :accepted => 1 }), method: :patch, remote: true, data: { confirm: 'Accept offer?' } %></td>
-        <td><%= link_to 'Show', offer %></td>
-        <td><%= link_to 'Edit', edit_offer_path(offer) %></td>
-        <td><%= link_to 'Destroy', offer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'list' %>
 
 <br>
 

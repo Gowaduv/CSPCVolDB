@@ -5,4 +5,14 @@
 <%= render 'general/display_roles', :user => @user %>
 <% if can?(:edit, @user) %>
 <%= link_to "Edit", edit_user_path(@user) %>
-<% end %>                              
+<% end %>
+<br />
+<br />
+<b>Qualifications</b>
+<%= render :partial => "qualifications/list" %>
+<br />
+<b>Schedules</b>
+<%= render :partial => "schedules/list" %>
+<br />
+<b>Offers</b>
+<%= render :partial => "offers/list" %>                              

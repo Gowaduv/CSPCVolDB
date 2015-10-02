@@ -1,6 +1,6 @@
 class StaffsController < ApplicationController
-  before_action :set_staff, only: [:show, :edit, :update, :destroy]
-
+  before_filter :authenticate_user!
+  load_and_authorize_resource
   respond_to :html
 
   def index
@@ -27,6 +27,7 @@ class StaffsController < ApplicationController
   end
 
   def update
+    Rails.logger.error("staff params in update #{staff_params.inspect}")
     @staff.update(staff_params)
     respond_with(@staff)
   end

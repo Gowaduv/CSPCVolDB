@@ -13,19 +13,19 @@
 
   <div class="field">
     <%= f.label :event %><br>
-    <%= f.collection_select(:event, Event.order(:name), :id, :name) %>
+    <%= f.collection_select(:event_id, Event.order(:name), :id, :name, { :selected => @staff.event_id }) %>
   </div>
   <div class="field">
     <%= f.label :position %><br>
-    <%= f.collection_select(:position, Position.order(:name), :id, :name) %>
+    <%= f.collection_select(:position_id, Position.order(:name), :id, :name, { :selected => @staff.position_id },  { :id => "position_select"}) %>
   </div>
   <div class="field">
     <%= f.label :shift %><br>
-    <%= f.collection_select(:shift, Shift.order(:start, :duration), :id, :start_with_duration) %>
+    <%= f.collection_select(:shift_id, Shift.order(:start, :duration), :id, :start_with_duration, { :selected => @staff.shift_id }) %>
   </div>
   <div class="field">
     <%= f.label :permanent_user %><br>
-    <%= f.collection_select(:user, Users.qualified(), :id, :username) %>
+    <%= f.collection_select(:permanent_user, User.all, :id, :username, { :selected => @staff.permanent_user, prompt: true, :include_blank => "No permanent volunteer"}, { :id => "user_select" }) %>
   </div>
   <div class="actions">
     <%= f.submit %>

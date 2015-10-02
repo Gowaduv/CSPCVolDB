@@ -17,7 +17,11 @@
 
 <p>
   <strong>Permanent user:</strong>
+  <% if @staff.permanent_user %>
   <%= User.find(@staff.permanent_user).username %>
+  <% else %>
+  None
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_staff_path(@staff) %> |

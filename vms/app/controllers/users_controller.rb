@@ -9,7 +9,10 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.includes(:qualifications, :schedules, :offers).find(params[:id])
+    @qualifications = @user.qualifications
+    @schedules = @user.schedules
+    @offers = @user.offers
   end
   
   def edit
