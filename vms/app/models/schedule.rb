@@ -17,6 +17,17 @@ class Schedule < ActiveRecord::Base
   end
   
   def accepted_offer
-    self.offers.where(accepted:1).first
+    self.offers.where(accepted:1).first  # there's only one accepted offer
+  end
+
+  def has_offer_from?(user)
+    return false if self.offers.empty?
+    return true if self.offers.map(&:user_id).include? user.id
+    return false
+  end
+  
+  def overlaps?(schedule)
+    Rails.logger.debug("self is #{self.inspect}")        
+    Rails.logger.debug("schedule is #{schedule.inspect}")
   end     
 end

@@ -21,20 +21,25 @@
       
       <% schedules.each do |s| %>
       <tr>
-        <td></td>
+        <td></td>          
         <td><%= s.position.name %></td>
         <td><%= s.shift.start %></td>
         <td><%= s.shift.duration.to_i %></td>
         <td><%= s.accepted_offer.user.username if s.accepted_offer %></td>
-        <td><span id="schedule_offer_<%= s.id %>"><% if s.accepted_offer %> 
-                  <%= link_to('Cancel shift', s.accepted_offer, method: :delete, data: { confirm: 'Are you sure?' }) %> 
-                <% elsif s.offers.where(:user_id => current_user.id).present? then %>
+        <% if current_user.present? %>
+        <td><span id="schedule_offer_<%= s.id %>">
+                <% if s.accepted_offer %>
+                  <% if s.has_offer_from?(current_user) %> 
+                    <%= link_to('Cancel shift', s.accepted_offer, method: :delete, data: { confirm: 'Are you sure?' }) %>
+                  <% end %> 
+                <% elsif s.has_offer_from?(current_user) then %>
                   <%= render 'offers/pending', :s => s %>                   
                 <% else %>
                   <%= render 'offers/signup', :s => s %>                 
-               <% end %>
+                <% end %>
                </span>
         </td>
+        <% end %>
       </tr>
       <% end %>
       </tbody>

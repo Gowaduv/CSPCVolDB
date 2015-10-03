@@ -18,7 +18,7 @@ namespace :schedule do |args|
     end
     begin 
       optparse.parse!(ARGV[2..-1])
-    rescue OptionsParser::InvalidOption => e
+    rescue OptionParser::InvalidOption => e
       puts "invalid option : e.inspect"
     end
 

@@ -5,10 +5,13 @@ class Ability
     user ||= User.new
  
     # default abilities
-    can :read, Position
-    can :read, Event
     can :read, Calendar
+    can :read, Event
+    can :read, Location
+    can :read, Position
+    can :listing, Event
     
+          
     if user.has_any_role?({:name => :vcd, :name => :dir})
        Rails.logger.error("user #{user.inspect} has roles vcd or dir #{user.roles.inspect}")
        can :manage, :all
@@ -22,8 +25,10 @@ class Ability
        can :manage, Shift
        can :manage, Staff
        can :manage, User
-       
      end
+    if user.has_any_role?({:name => :volunteer})
+      can :create, Offer
+    end
      
   end
 
