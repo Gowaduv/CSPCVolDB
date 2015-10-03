@@ -1,0 +1,18 @@
+#offers_path(offer: {user_id: current_user.id, schedule_id: s.id, accepted: 0} ), remote: true, method: :post, data: { confirm: "Are you sure?" } 
+$ ->
+  $('body').on "click", '.signup', ->
+    schedule_id = $(this).attr('data-schedule-id')
+    user_id = $(this).attr('data-user-id')
+    $.ajax '/offers/',
+      type: 'POST'
+      data: {
+        offer: { 
+          "user_id": user_id,
+          "schedule_id": schedule_id 
+        } 
+      }
+      dataType: 'script'
+    error: (jqXHR, textStatus, errorThrown) ->
+      console.log("AJAX Error: #{textStatus}")
+    success: (data, textStatus, jqXHR) ->
+      console.log("Canceled offer")

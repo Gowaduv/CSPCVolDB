@@ -27,7 +27,9 @@ class Ability
        can :manage, User
      end
     if user.has_any_role?({:name => :volunteer})
+      Rails.logger.error("user #{user.inspect} has roles volunteer #{user.roles.inspect}")
       can :create, Offer
+      can :update, Offer
     end
      
   end

@@ -1,0 +1,12 @@
+#offer_path(s.offers.where(:user_id => current_user.id).first,offer:{ revoked: 1}), remote: true, method: :update,
+$ ->
+  $('body').on "click", '.cancel_offer', ->
+    offer_id = (this.id.split "_")[2]
+    $.ajax '/offers/'+offer_id,
+      type: 'PATCH'
+      data: {offer: { revoked: 1 } }
+      dataType: 'script'
+    error: (jqXHR, textStatus, errorThrown) ->
+      console.log("AJAX Error: #{textStatus}")
+    success: (data, textStatus, jqXHR) ->
+      console.log("Canceled offer")

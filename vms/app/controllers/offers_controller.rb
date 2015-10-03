@@ -26,7 +26,13 @@ class OffersController < ApplicationController
   end
 
   def create
-    @offer = Offer.new(offer_params)
+    @offer = Offer.where(:user_id => offer_params[:user_id], :schedule_id => offer_params[:schedule_id]).first
+    if (@offer.nil?) then
+      @offer = Offer.new(offer_params) if @offer.nil?
+    else
+      @offer.revoked = nil
+      @offer.revoke_timestamp = nil
+    end    
     @offer.save
     respond_to do |format|
       format.html { respond_with(@offer) }
@@ -37,6 +43,7 @@ class OffersController < ApplicationController
 
   def update
     params = offer_params
+    @schedule = @offer.schedule
     if params[:accepted].present? then
       params[:accepted_id] = current_user.id
       params[:accepted_timestamp] = Time.now
@@ -48,9 +55,8 @@ class OffersController < ApplicationController
       params[:denied_timestamp] = Time.now
     elsif params[:revoked].present?
       params[:revoke_timestamp] = Time.now
-      s = @offer.schedule
-      s.offer_id = nil
-      s.save
+      @schedule.offer_id = nil
+      @schedule.save
     end
     @offer.update(params)
     respond_to do |format|
@@ -76,6 +82,6 @@ class OffersController < ApplicationController
     end
 
     def offer_params
-      params.require(:offer).permit(:user_id, :schedule_id, :accepted)
+      params.require(:offer).permit(:user_id, :schedule_id, :accepted, :revoked, :denied)
     end
 end

@@ -22,8 +22,13 @@ class Schedule < ActiveRecord::Base
 
   def has_offer_from?(user)
     return false if self.offers.empty?
-    return true if self.offers.map(&:user_id).include? user.id
+    return true if self.offers.where(:revoked => nil).map(&:user_id).include? user.id
     return false
+  end
+  
+  def get_user_offer_id(user)
+    return nil if user.nil?
+    return self.offers.where(:user_id => user.id).first.id # should only be one offer per user
   end
   
   def overlaps?(schedule)

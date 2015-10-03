@@ -1,2 +1,2 @@
-Pending Offer! 
-<%= link_to('Cancel offer', offer_path(s.offers.where(:user_id => current_user.id).first,offer:{ revoked: 1}), remote: true, method: :update, data: { confirm: 'Are you sure?' }) %>
+Pending Offer!
+<%= link_to('Cancel offer', "javascript:void(0);", { id: "cancel_offer_"+s.get_user_offer_id(current_user).to_s, class: "cancel_offer"} ) %>
