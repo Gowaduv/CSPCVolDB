@@ -1,3 +1,4 @@
+# javascript method for 'Sign up' button on app/views/events/listing
 #offers_path(offer: {user_id: current_user.id, schedule_id: s.id, accepted: 0} ), remote: true, method: :post, data: { confirm: "Are you sure?" } 
 $ ->
   $('body').on "click", '.signup', ->
@@ -12,7 +13,3 @@ $ ->
         } 
       }
       dataType: 'script'
-    error: (jqXHR, textStatus, errorThrown) ->
-      console.log("AJAX Error: #{textStatus}")
-    success: (data, textStatus, jqXHR) ->
-      console.log("Canceled offer")

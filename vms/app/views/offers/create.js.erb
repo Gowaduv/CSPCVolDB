@@ -1,1 +1,5 @@
-$("#schedule_offer_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/pending', :locals => { :s => @offer.schedule }) %>");
+<% if @offer.errors.any? %>
+  $("#schedule_offer_<%= @offer.schedule.id %>").html("<p><%= @offer.errors.full_messages.first %></p>");
+<% else %>
+  $("#schedule_offer_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/pending', :locals => { :s => @offer.schedule }) %>");
+<% end %>

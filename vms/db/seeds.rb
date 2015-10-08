@@ -197,21 +197,21 @@ Event.create(
 
 Location.create(name: "Main Space", description: "The main space of the Center for Sex Positive Culture.")
 
-Shift.create(start: "18:00", duration: "360") # 1, starts at 6pm, 6 hours long, ends at midnight
-Shift.create(start: "18:00", duration: "180") # 2, starts at 6pm, 3 hours long, ends at 9pm
-Shift.create(start: "21:00", duration: "180") # 3, starts at 9pm, 3 hours long, ends at midnight
-Shift.create(start: "19:00", duration: "180") # 4, starts at 7pm, 3 hours long, ends at 10pm
-Shift.create(start: "19:30", duration: "210") # 5, starts at 7:30 pm, 3 1/2 hours long, ends at 11 pm
-Shift.create(start: "22:30", duration: "210") # 6, starts at 10:30 pm, 3 1/2 hours long, ends at 2 am
-Shift.create(start: "19:00", duration: "240") # 7, starts at 7pm, 4 hours long, ends at 11 pm
-Shift.create(start: "22:30", duration: "240") # 8, starts at 10:30 pm, 4 hours long, ends at 2:30 am
-Shift.create(start: "19:00", duration: "60")  # 9, starts at 7pm, 1 hour long, ends at 8pm
-Shift.create(start: "19:30", duration: "180") #10, starts at 7:30 pm, 3 hours long, ends at 10:30 pm
-Shift.create(start: "20:00", duration: "180") #11, starts at 8pm, 3 hours long, ends at 11pm
-Shift.create(start: "22:00", duration: "180") #12, starts at 10pm, 3 hours long, ends at 1 am
-Shift.create(start: "23:00", duration: "180") #13, starts at 11pm, 3 hours long, ends at 2 am
-Shift.create(start: "01:30", duration: "60")  #14, starts at 1:30 am, 1 hour long, ends at 2:30 am
-Shift.create(start: "18:00", duration: "210") #15, starts at 6pm, 3 1/2 hours long, ends at 9:30 pm
+Shift.create(start: "18:00", duration: "360", credit: "360") # 1, starts at 6pm, 6 hours long, ends at midnight
+Shift.create(start: "18:00", duration: "180", credit: "360") # 2, starts at 6pm, 3 hours long, ends at 9pm
+Shift.create(start: "21:00", duration: "180", credit: "180") # 3, starts at 9pm, 3 hours long, ends at midnight
+Shift.create(start: "19:00", duration: "180", credit: "180") # 4, starts at 7pm, 3 hours long, ends at 10pm
+Shift.create(start: "19:30", duration: "210", credit: "210") # 5, starts at 7:30 pm, 3 1/2 hours long, ends at 11 pm
+Shift.create(start: "22:30", duration: "210", credit: "240") # 6, starts at 10:30 pm, 3 1/2 hours long, ends at 2 am
+Shift.create(start: "19:00", duration: "240", credit: "240") # 7, starts at 7pm, 4 hours long, ends at 11 pm
+Shift.create(start: "22:30", duration: "240", credit: "270") # 8, starts at 10:30 pm, 4 hours long, ends at 2:30 am
+Shift.create(start: "19:00", duration: "60",  credit: "60")  # 9, starts at 7pm, 1 hour long, ends at 8pm
+Shift.create(start: "19:30", duration: "180", credit: "180") #10, starts at 7:30 pm, 3 hours long, ends at 10:30 pm
+Shift.create(start: "20:00", duration: "180", credit: "180") #11, starts at 8pm, 3 hours long, ends at 11pm
+Shift.create(start: "22:00", duration: "180", credit: "180") #12, starts at 10pm, 3 hours long, ends at 1 am
+Shift.create(start: "23:00", duration: "180", credit: "210") #13, starts at 11pm, 3 hours long, ends at 2 am
+Shift.create(start: "01:30", duration: "60",  credit: "90")  #14, starts at 1:30 am, 1 hour long, ends at 2:30 am
+Shift.create(start: "18:00", duration: "210", credit: "210") #15, starts at 6pm, 3 1/2 hours long, ends at 9:30 pm
 
 # rough and tumble
 Staff.create(event_id: 1, position_id: ec.id, shift_id: 1, permanent_user: 2) # all shift EC

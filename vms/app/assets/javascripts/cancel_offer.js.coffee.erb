@@ -1,4 +1,4 @@
-#offer_path(s.offers.where(:user_id => current_user.id).first,offer:{ revoked: 1}), remote: true, method: :update,
+# javascript method for both 'Cancel Shift' and 'Cancel Offer' buttons
 $ ->
   $('body').on "click", '.cancel_offer', ->
     offer_id = (this.id.split "_")[2]

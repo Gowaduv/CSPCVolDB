@@ -106,7 +106,8 @@ ActiveRecord::Schema.define(version: 20150920094924) do
 
   create_table "shifts", force: true do |t|
     t.string   "start"
-    t.string   "duration"
+    t.integer  "duration"
+    t.integer  "credit"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

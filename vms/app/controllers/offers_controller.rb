@@ -32,12 +32,21 @@ class OffersController < ApplicationController
     else
       @offer.revoked = nil
       @offer.revoke_timestamp = nil
-    end    
-    @offer.save
-    respond_to do |format|
-      format.html { respond_with(@offer) }
-      format.json { render json: @offer }
-      format.js  
+    end 
+    if (@offer.overlap?) then
+      @offer.errors.add(:base, "You have already signed up for an overlapping shift.")
+      respond_to do |format|
+        format.html { respond_with(@offer) }
+        format.json { render json: @offer.errors, status: :unprocessable_entity }
+        format.js # handled in create.js.erb
+      end
+    else   
+      @offer.save
+      respond_to do |format|
+        format.html { respond_with(@offer) }
+        format.json { render json: @offer }
+        format.js  
+      end
     end
   end
 

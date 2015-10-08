@@ -9,28 +9,35 @@
       <table>
         <thead>
         <th></th>
-        <th><u>STAFF</u></th>
-        <th><u>START</u></th>
-        <th><u>END</u></th>
-        <th><u>VOLUNTEER</u></th>
-        <th><u>Click below to:</u></th>
-        <th><u>SHADOWS</u></th>
-        <th><u>Click below to:</u></th>
+        <th>STAFF</th>
+        <th>START</th>
+        <th>END</th>
+        <th>DURATION</th>
+        <th>CREDIT</th>
+        <th>VOLUNTEER</th>
+        <% if current_user.present? %>
+        <th>Click below to:</th>
+        <th>SHADOWS</th>
+        <th>Click below to:</th>
+        <% end %>
         </thead>
         <tbody>        
       
       <% schedules.each do |s| %>
+      <% ics = s.to_icecube %>
       <tr>
         <td></td>          
         <td><%= s.position.name %></td>
-        <td><%= s.shift.start %></td>
-        <td><%= s.shift.duration.to_i %></td>
+        <td><%= ics.start_time.strftime("%I:%M%p") %></td>
+        <td><%= ics.end_time.strftime("%I:%M%p") %>
+        <td><%= s.shift.duration %> minutes</td>
+        <td><%= s.shift.credit %> minutes</td>
         <td><%= s.accepted_offer.user.username if s.accepted_offer %></td>
         <% if current_user.present? %>
         <td><span id="schedule_offer_<%= s.id %>">
                 <% if s.accepted_offer %>
                   <% if s.has_offer_from?(current_user) %> 
-                    <%= link_to('Cancel shift', s.accepted_offer, method: :delete, data: { confirm: 'Are you sure?' }) %>
+                     <%= render 'offers/cancel', :s => s %>
                   <% end %> 
                 <% elsif s.has_offer_from?(current_user) then %>
                   <%= render 'offers/pending', :s => s %>                   
@@ -44,6 +51,7 @@
       <% end %>
       </tbody>
       </table>
+      <br />
     <% end %>   
   <% end %>
 <br>
