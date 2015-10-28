@@ -3,10 +3,13 @@ class Offer < ActiveRecord::Base
   belongs_to :schedule
 
   scope :accepted, -> { where(accepted: true, :revoked => nil) }
-  scope :revoked, -> { where(revoked: true) }
+  scope :revoked, -> { where(revoked: true, :accepted => nil) }
   scope :pending, -> { where(accepted: false, revoked: false, denied: false) }
   scope :denied, -> { where(denied: true) }
-  scope :valid_offers, -> { where("offers.accepted = 1 or offers.revoked is NULL and offers.denied is NULL") }  
+  scope :canceled_shift, -> { where(accepted: true, revoked: true) }
+  # accepted+revoked = canceled shift;  revoked only = canceled offer;  denied = admin refused offer
+  scope :valid_offers, -> { where("offers.accepted = 1 and offers.revoked is NULL or offers.revoked is NULL and offers.denied is NULL") }
+  
   
   def overlap?
     # find user's other offers

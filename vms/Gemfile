@@ -53,4 +53,4 @@ gem 'jquery-minicolors-rails'
 # can copy Devise views to app using: rails g devise:views
 gem 'devise'
 gem 'cancancan', '~> 1.10'
-gem 'rolify'
+#gem 'rolify'

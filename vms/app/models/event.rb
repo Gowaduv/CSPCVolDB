@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  #resourcify
   #include IceCube
   
   belongs_to :calendar

@@ -1,4 +1,5 @@
 class Schedule < ActiveRecord::Base
+  #resourcify
   belongs_to :staff
   belongs_to :location
   has_one :event, through: :staff

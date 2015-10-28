@@ -32,7 +32,7 @@
         <td><%= ics.end_time.strftime("%I:%M%p") %>
         <td><%= s.shift.duration %> minutes</td>
         <td><%= s.shift.credit %> minutes</td>
-        <td><%= s.accepted_offer.user.username if s.accepted_offer %></td>
+        <td><span id="schedule_user_<%= s.id %>"><%= s.accepted_offer.user.username if s.accepted_offer %></span></td>
         <% if current_user.present? %>
         <td><span id="schedule_offer_<%= s.id %>">
                 <% if s.accepted_offer %>
@@ -42,7 +42,9 @@
                 <% elsif s.has_offer_from?(current_user) then %>
                   <%= render 'offers/pending', :s => s %>                   
                 <% else %>
-                  <%= render 'offers/signup', :s => s %>                 
+                  <% if current_user.qualified?(s.position.name) %>
+                    <%= render 'offers/signup', :s => s %>
+                  <% end %>                 
                 <% end %>
                </span>
         </td>

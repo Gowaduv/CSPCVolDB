@@ -68,11 +68,19 @@ u = User.find(1)
 u.add_role(:dir)
 u = User.find(13)
 u.add_role(:dir)
+User.find(3).add_role(:volunteer)
+User.find(3).add_role(:volunteer)
+User.find(4).add_role(:volunteer)
+User.find(5).add_role(:volunteer)
+User.find(6).add_role(:volunteer)
+User.find(7).add_role(:volunteer)
+User.find(8).add_role(:volunteer)
+User.find(9).add_role(:volunteer)
+User.find(10).add_role(:volunteer)
+User.find(11).add_role(:volunteer)
+User.find(12).add_role(:volunteer)
+User.find(13).add_role(:volunteer)
 
-u = User.find(2)
-u.add_role(:champion)
-u.add_role(:ec)
-u.add_role(:volunteer)
 
 ec = Position.find_by_name("Event Coordinator")
 Qualification.create(user_id: 2, position_id: ec.id, status: "Good", count: 392)
@@ -196,6 +204,32 @@ Event.create(
 ")
 
 Location.create(name: "Main Space", description: "The main space of the Center for Sex Positive Culture.")
+
+# add event specific info
+u = User.find(2)
+u.add_role(:champion, Event.find(1))  # champion for Rough and Tumble
+u.add_role(:ec)
+u.add_role(:volunteer)
+
+# add role permissions  - action subject_class subject_id user_id
+# a champion can change the event information, update the current instance 
+# schedules, and change the party staff information.
+Permission.create!(id: 1, action: "update", subject_class: "Event" )
+Permission.create!(id: 2, action: "manage", subject_class: "Schedule")
+Permission.create!(id: 3, action: "manage", subject_class: "Staff")
+champion_role = Role.find_by_name("champion")
+RolePermission.create!(role_id: champion_role.id, permission_id: 1)
+RolePermission.create!(role_id: champion_role.id, permission_id: 2)
+RolePermission.create!(role_id: champion_role.id, permission_id: 3)
+
+
+
+#Permission.create!(action: , subject_class: )
+#Permission.create!(action: , subject_class: )
+#Permission.create!(action: , subject_class: )
+#Permission.create!(action: , subject_class: )
+
+#Permission.create!(action: "manage", subject_class: "event", subject_id: 1, user_id: 2) # rough and tumble
 
 Shift.create(start: "18:00", duration: "360", credit: "360") # 1, starts at 6pm, 6 hours long, ends at midnight
 Shift.create(start: "18:00", duration: "180", credit: "360") # 2, starts at 6pm, 3 hours long, ends at 9pm

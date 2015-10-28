@@ -12,12 +12,23 @@ class ApplicationController < ActionController::Base
     
   protected
 
+  def check_user_match(user_id)
+    if (current_user.id == user_id.to_i)
+      Rails.logger.debug("Attempted hacking? #{current_user} trying to sign up #{offer_params.inspect}")
+      redirect_to listing_path
+      return false
+    else
+      return true
+    end
+    
+  end    
+
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.error "Access denied on #{exception.action} #{exception.subject.inspect}"
     redirect_to root_path, :alert => exception.message
   end
-  
-   def access_denied(exception)
+    
+  def access_denied(exception)
     Rails.logger.error "Access denied on #{exception.action} #{exception.subject.inspect}"
     redirect_to root_path, :alert => exception.message
   end

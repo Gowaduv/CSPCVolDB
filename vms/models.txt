@@ -2,6 +2,7 @@
 * Events are a gathering of people to do something.
 * Locations are where the events happen.
 * Offers are people volunteering to work a schedule
+* Permissions are things that roles and users can do
 * Positions are various activities people volunteer to do at an event.
 * Qualifications are which users are qualified to work which positions
 * Roles define responsibilities and privleges on the website
@@ -28,13 +29,17 @@ A location has many events
 An offer has one user
 An offer has one schedule
 
+A permission has many users
+A permission has many roles
+
 A position has many users through qualifications
 A position has many schedules through staffs
 
 A qualification has one user
-A qualificatio has one position
+A qualification has one position
 
 A role has many users through users_roles
+A role has many permissions
 
 A schedule has one event through staffs
 A schedule has one position
@@ -49,5 +54,49 @@ A staff has one shift
 A staff has one location 
   
 A user has many roles through user_roles.
+A user has many permissions through user_roles
 A user has many schedules through 
-  
+
+
+-------------------------------------------------
+
+http://blog.joshsoftware.com/2012/10/23/dynamic-roles-and-permissions-using-cancan/
+
+
+Rolify requires that models that it manages have the 'resourcify' method, so
+events, schedules, and staff have resourcify.
+
+A volunteer should be able to create offers and update their own offers.
+
+A champion of an event should be able to change the event information, update
+the permanent staff, update the current instance schedules, and change the
+party staff information.
+
+A role lead (monitor lead, cashier lead, etc) should be able to create shadow
+shifts, update shadow staffs, update shadow schedules, and add qualifications.
+
+Director or VCD should be able to do everything to all parties.
+
+The permissions table holds the information about what actions are permitted
+in the database by what users or what roles. 
+
+user_roles contains a user_id, role_id, event_id.
+permissions contains a user_id, event_id, action, subject_class, subject_id
+
+A user can have a role that has many permissions
+A user can have specific permissions
+Roles are a way to group many standard permissions into a set for conciseness
+Users may need specific permissions aside from these role permissions, which
+can be added specifically to each user.
+
+The "vcd" and "dir" roles have hard coded ability to manage all resources
+The "volunteer" role has the hard coded ability to create and update offers 
+and to view the Event listing.
+A guest can read Event, Position, Calendar, and Location.
+All other roles have no default abilities, but only those assigned by the 
+permissions model in the database.
+
+subject_class should be the class that the user has permissions for.
+This will typically be event with the event_id in subject_id
+
+# TODO: remove config/initializers/rolify.rb       

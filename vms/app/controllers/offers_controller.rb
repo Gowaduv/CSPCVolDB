@@ -1,6 +1,6 @@
 class OffersController < ApplicationController
   before_filter :authenticate_user!
-  load_and_authorize_resource
+  load_and_authorize_resource 
 
   respond_to :html, :js, :json
 
@@ -26,6 +26,12 @@ class OffersController < ApplicationController
   end
 
   def create
+    check_user_match(offer_params[:user_id]) or return
+    # check qualifications
+    Rails.logger.debug("offers:create user is #{current_user.id} #{offer_params[:user_id]}")
+    
+ 
+    # create offer
     @offer = Offer.where(:user_id => offer_params[:user_id], :schedule_id => offer_params[:schedule_id]).first
     if (@offer.nil?) then
       @offer = Offer.new(offer_params) if @offer.nil?
@@ -51,6 +57,8 @@ class OffersController < ApplicationController
   end
 
   def update
+    check_user_match(offer_params[:user_id]) or return
+    Rails.logger.debug("offers:update user is #{current_user.id} #{offer_params[:user_id]}")
     params = offer_params
     @schedule = @offer.schedule
     if params[:accepted].present? then
@@ -63,6 +71,10 @@ class OffersController < ApplicationController
       params[:denied_id] = current_user.id
       params[:denied_timestamp] = Time.now
     elsif params[:revoked].present?
+      if @offer.accepted? then
+        @offer.accepted = nil
+        @offer.accepted_timestamp = nil
+      end      
       params[:revoke_timestamp] = Time.now
       @schedule.offer_id = nil
       @schedule.save

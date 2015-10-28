@@ -8,5 +8,7 @@ class Position < ActiveRecord::Base
   has_many :schedules, through: :shifts
 
   enum training: [ :no, :yes ]   # no is 0, yes is 1
+  
+  scope :entry_level, -> { where(:training => false) }
                       
 end

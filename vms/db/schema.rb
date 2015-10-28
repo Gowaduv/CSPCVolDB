@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150920094924) do
+ActiveRecord::Schema.define(version: 20151011035039) do
 
   create_table "calendars", force: true do |t|
     t.string   "name"
@@ -58,6 +58,20 @@ ActiveRecord::Schema.define(version: 20150920094924) do
   add_index "offers", ["schedule_id"], name: "index_offers_on_schedule_id", using: :btree
   add_index "offers", ["user_id"], name: "index_offers_on_user_id", using: :btree
 
+  create_table "permissions", force: true do |t|
+    t.string   "action"
+    t.string   "subject_class"
+    t.integer  "subject_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permissions", ["action", "subject_class", "subject_id"], name: "index_permissions_on_action_and_subject_class_and_subject_id", using: :btree
+  add_index "permissions", ["action", "subject_class"], name: "index_permissions_on_action_and_subject_class", using: :btree
+  add_index "permissions", ["action"], name: "index_permissions_on_action", using: :btree
+  add_index "permissions", ["user_id"], name: "index_permissions_on_user_id", using: :btree
+
   create_table "positions", force: true do |t|
     t.string   "name"
     t.integer  "training",   default: 0
@@ -79,16 +93,23 @@ ActiveRecord::Schema.define(version: 20150920094924) do
   add_index "qualifications", ["position_id"], name: "index_qualifications_on_position_id", using: :btree
   add_index "qualifications", ["user_id"], name: "index_qualifications_on_user_id", using: :btree
 
-  create_table "roles", force: true do |t|
-    t.string   "name"
-    t.string   "desc"
-    t.integer  "resource_id"
-    t.string   "resource_type"
+  create_table "role_permissions", force: true do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.integer  "added_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "role_permissions", ["role_id", "permission_id"], name: "index_role_permissions_on_role_id_and_permission_id", using: :btree
+
+  create_table "roles", force: true do |t|
+    t.string   "name"
+    t.string   "desc"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "schedules", force: true do |t|
@@ -150,13 +171,15 @@ ActiveRecord::Schema.define(version: 20150920094924) do
   create_table "users_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "role_id"
-    t.integer  "event_id"
     t.integer  "added_by_id"
+    t.string   "subject_class"
+    t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users_roles", ["user_id", "role_id", "event_id"], name: "index_users_roles_on_user_id_and_role_id_and_event_id", using: :btree
+  add_index "users_roles", ["user_id", "role_id", "subject_class", "subject_id"], name: "index_user_roles_resources", using: :btree
+  add_index "users_roles", ["user_id", "role_id", "subject_id"], name: "index_users_roles_on_user_id_and_role_id_and_subject_id", using: :btree
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
 end
