@@ -1,0 +1,2 @@
+<!-- uses app/assets/javascripts/deny_offer.js.coffee.erb -->
+<%= link_to('Deny offer', "javascript:void(0);", { id: "deny_offer_"+s.get_user_offer_id(current_user).to_s, class: "deny_offer", data:{ user_id: current_user.id} } ) %>

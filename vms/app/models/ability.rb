@@ -32,8 +32,9 @@ class Ability
      
     if user.has_any_role?({:name => :volunteer})
       Rails.logger.error("user #{user.inspect} has roles volunteer #{user.roles.inspect}")
-      can :create, Offer
-      can :update, Offer
+      can :create, Offer, :user_id => user.id
+      can :update, Offer, :user_id => user.id
+      cannot :update, Offer, { :revoked => nil }        
       can :listing, Event
     end
 

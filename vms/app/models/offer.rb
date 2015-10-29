@@ -10,6 +10,15 @@ class Offer < ActiveRecord::Base
   # accepted+revoked = canceled shift;  revoked only = canceled offer;  denied = admin refused offer
   scope :valid_offers, -> { where("offers.accepted = 1 and offers.revoked is NULL or offers.revoked is NULL and offers.denied is NULL") }
   
+  def revoked?
+    return true if self.revoked
+    return false
+  end
+  
+  def denied?
+    return true if self.denied
+    return false
+  end
   
   def overlap?
     # find user's other offers

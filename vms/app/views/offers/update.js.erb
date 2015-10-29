@@ -1,2 +1,16 @@
 $("#schedule_user_<%= @schedule.id %>").html("");
+<% if @schedule.accepted_offer %>
+$("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/cancel', :locals => { :s => @schedule }) %>");
+$("#approve_offer_<%= @offer.schedule.id %>").html("");
+$("#deny_offer_<%= @offer.schedule.id %>").html("");
+<% elsif @offer.revoked? %>
 $("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
+$("#approve_offer_<%= @offer.schedule.id %>").html("");
+$("#deny_offer_<%= @offer.schedule.id %>").html("");
+<% elsif @offer.denied? %>
+$("#schedule_offer_<%= @schedule.id %>").html("Offer Denied.  Thank you for your offer.");
+$("#approve_offer_<%= @offer.schedule.id %>").html("");
+$("#deny_offer_<%= @offer.schedule.id %>").html("");
+<% else %>
+$("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
+<% end %>

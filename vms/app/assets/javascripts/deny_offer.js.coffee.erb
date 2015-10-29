@@ -1,13 +1,13 @@
-# javascript method for both 'Cancel Shift' and 'Cancel Offer' buttons
+# javascript method for 'Deny offer' button
 $ ->
-  $('body').on "click", '.cancel_offer', ->
+  $('body').on "click", '.deny_offer', ->
     offer_id = (this.id.split "_")[2]
     userId = $(this).data().userId
     $.ajax '/offers/'+offer_id,
       type: 'PATCH'
-      data: { offer: { revoked: 1, "user_id": userId } }
+      data: { offer: { denied: 1, "user_id": userId } }
       dataType: 'script'
     error: (jqXHR, textStatus, errorThrown) ->
       console.log("AJAX Error: #{textStatus}")
     success: (data, textStatus, jqXHR) ->
-      console.log("Canceled offer")
+      console.log("Approved offer")

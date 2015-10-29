@@ -57,23 +57,24 @@ class OffersController < ApplicationController
   end
 
   def update
-    check_user_match(offer_params[:user_id]) or return
     Rails.logger.debug("offers:update user is #{current_user.id} #{offer_params[:user_id]}")
+    check_user_match(offer_params[:user_id]) or return
     params = offer_params
     @schedule = @offer.schedule
     if params[:accepted].present? then
-      params[:accepted_id] = current_user.id
+      params[:accepted_user_id] = current_user.id
       params[:accepted_timestamp] = Time.now
       s = @offer.schedule
-      s.offer_id = self.id
+      s.offer_id = @offer.id
       s.save
     elsif params[:denied].present? then
-      params[:denied_id] = current_user.id
+      params[:denied_user_id] = current_user.id
       params[:denied_timestamp] = Time.now
     elsif params[:revoked].present?
       if @offer.accepted? then
-        @offer.accepted = nil
-        @offer.accepted_timestamp = nil
+        params[:accepted] = nil
+        params[:accepted_timestamp] = nil
+        params[:accepted_user_id] = nil
       end      
       params[:revoke_timestamp] = Time.now
       @schedule.offer_id = nil

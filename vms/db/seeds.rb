@@ -63,6 +63,7 @@ User.create!(id: 10, username: "Mike", email: "mike@yahoo.com", member_number: "
 User.create!(id: 11, username: "TK", email: "tk@yahoo.com", member_number: "100000", password: "testing1")
 User.create!(id: 12, username: "Larry", email: "larry@yahoo.com", member_number: "10", password: "testing1")
 User.create!(id: 13, username: "Jan", email: "md@thecspc.org", member_number: "2", password: "password")
+User.create!(id: 14, username: "Oz", email: "oz@yahoo.com", member_number: "25320", password: "testing1")
 
 u = User.find(1)
 u.add_role(:dir)
@@ -80,7 +81,7 @@ User.find(10).add_role(:volunteer)
 User.find(11).add_role(:volunteer)
 User.find(12).add_role(:volunteer)
 User.find(13).add_role(:volunteer)
-
+User.find(14).add_role(:volunteer)
 
 ec = Position.find_by_name("Event Coordinator")
 Qualification.create(user_id: 2, position_id: ec.id, status: "Good", count: 392)
@@ -94,6 +95,7 @@ Qualification.create(user_id: 7, position_id: monitor.id, status: "Good", count:
 cashier = Position.find_by_name("Cashier")
 Qualification.create(user_id: 3, position_id: cashier.id, status: "Good", count: 300)
 Qualification.create(user_id: 6, position_id: cashier.id, status: "Good", count: 3993)
+Qualification.create(user_id: 14, position_id: cashier.id, status: "Good", count: 3)
 
 
 Calendar.create(id: 1, name: "CSPC", description: "Calendar for the Center for Sex Positive Culture in Seattle, WA.", color: "#8911d9")
@@ -217,11 +219,12 @@ u.add_role(:volunteer)
 Permission.create!(id: 1, action: "update", subject_class: "Event" )
 Permission.create!(id: 2, action: "manage", subject_class: "Schedule")
 Permission.create!(id: 3, action: "manage", subject_class: "Staff")
+Permission.create!(id: 4, action: "approve", subject_class: "Offer")
 champion_role = Role.find_by_name("champion")
 RolePermission.create!(role_id: champion_role.id, permission_id: 1)
 RolePermission.create!(role_id: champion_role.id, permission_id: 2)
 RolePermission.create!(role_id: champion_role.id, permission_id: 3)
-
+RolePermission.create!(role_id: champion_role.id, permission_id: 4)
 
 
 #Permission.create!(action: , subject_class: )

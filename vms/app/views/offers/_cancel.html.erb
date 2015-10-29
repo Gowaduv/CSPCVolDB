@@ -1,2 +1,2 @@
 <!-- uses app/assets/javascripts/cancel_offer.js.coffee.erb -->
-<%= link_to('Cancel shift', "javascript:void(0);", { id: "cancel_offer_"+s.get_user_offer_id(current_user).to_s, class: "cancel_offer"} ) %>
+<%= link_to('Cancel shift', "javascript:void(0);", { id: "cancel_offer_"+s.get_user_offer_id(current_user).to_s, class: "cancel_offer", data:{ user_id: current_user.id} }  ) %>

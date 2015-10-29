@@ -99,4 +99,6 @@ permissions model in the database.
 subject_class should be the class that the user has permissions for.
 This will typically be event with the event_id in subject_id
 
+If a person can :approve (accepted) an Offer then they can also deny it (denied).
+
 # TODO: remove config/initializers/rolify.rb       

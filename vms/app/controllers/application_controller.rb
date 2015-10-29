@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def check_user_match(user_id)
-    if (current_user.id == user_id.to_i)
+    if (current_user.id != user_id.to_i)
       Rails.logger.debug("Attempted hacking? #{current_user} trying to sign up #{offer_params.inspect}")
       redirect_to listing_path
       return false

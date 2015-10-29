@@ -19,6 +19,9 @@
         <th>Click below to:</th>
         <th>SHADOWS</th>
         <th>Click below to:</th>
+        <% if can? :approve, Offer %>
+        <th>Manage Offers</th>
+        <% end %>
         <% end %>
         </thead>
         <tbody>        
@@ -35,20 +38,42 @@
         <td><span id="schedule_user_<%= s.id %>"><%= s.accepted_offer.user.username if s.accepted_offer %></span></td>
         <% if current_user.present? %>
         <td><span id="schedule_offer_<%= s.id %>">
-                <% if s.accepted_offer %>
-                  <% if s.has_offer_from?(current_user) %> 
+                <% if s.has_offer_from?(current_user) %>
+                  <% if s.accepted_offer %>
                      <%= render 'offers/cancel', :s => s %>
-                  <% end %> 
-                <% elsif s.has_offer_from?(current_user) then %>
-                  <%= render 'offers/pending', :s => s %>                   
+                  <% elsif s.has_denied_offer_from?(current_user) then %>
+                    Offer Denied.  Thank you for your offer.
+                  <% else %>
+                    <%= render 'offers/pending', :s => s %>
+                  <% end %>                   
                 <% else %>
-                  <% if current_user.qualified?(s.position.name) %>
+                  <% if current_user.qualified?(s.position.name) and !s.accepted_offer %>
                     <%= render 'offers/signup', :s => s %>
                   <% end %>                 
                 <% end %>
                </span>
         </td>
         <% end %>
+        <td></td> <!-- shadow name -->
+        <td></td> <!-- shadow info -->
+        <td>
+          <span id="approve_offer_<%= s.id %>">
+          <% if current_user.present? and can? :approve, s.staff.event  %>
+            <% if s.has_offer_from?(current_user) or s.has_denied_offer_from?(current_user) %>
+              <%= render 'offers/approve', :s => s %>
+            <% elsif s.offers.count > 1 %>
+              Render link
+            <% else %>
+              Render single option            
+            <% end %>
+          <% end %>
+          </span>
+          <span id="deny_offer_<%= s.id %>">
+          <% if current_user.present? and s.has_offer_from?(current_user) and can? :approve, s.staff.event %>
+            <%= render 'offers/deny', :s => s %>
+          <% end %>
+          </span>
+        </td>
       </tr>
       <% end %>
       </tbody>
