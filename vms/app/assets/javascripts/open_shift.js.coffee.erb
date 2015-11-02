@@ -1,0 +1,15 @@
+# javascript method for 'Open Shift' button
+$ ->
+  $('body').on "click", '.open_shift', ->
+    offer_id = $(this).data().offerId
+    userId = $(this).data().userId
+    console.log("offer_id "+offer_id)
+    console.log("userId " + userId)
+    $.ajax '/offers/'+offer_id,
+      type: 'PATCH'
+      data: { offer: { accepted: 0, "user_id": userId } }
+      dataType: 'script'
+    error: (jqXHR, textStatus, errorThrown) ->
+      console.log("AJAX Error: #{textStatus}")
+    success: (data, textStatus, jqXHR) ->
+      console.log("Canceled offer")

@@ -2,6 +2,7 @@
   $("#schedule_offer_<%= @offer.schedule.id %>").html("<p><%= @offer.errors.full_messages.first %></p>");
 <% else %>
   $("#schedule_offer_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/pending', :locals => { :s => @offer.schedule }) %>");
-  $("#approve_offer_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/approve', :locals => { :s => @offer.schedule }) %>");
-  $("#deny_offer_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/deny', :locals => { :s => @offer.schedule }) %>");
+  <% if can? :update, @offer %>
+    $("#manage_offers_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/user_offers', :locals => { :s => @offer.schedule }) %>");
+  <% end %>
 <% end %>

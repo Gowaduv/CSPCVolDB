@@ -1,0 +1,19 @@
+<table style="border:none;">
+<% s.offers.pending.each do|offer| %>
+<tr>
+<span id="multi_offer_<% s.id %>">
+  <td style="border:none;"><%= offer.user.username %></td>  
+  <% if s.staff.position.training? %>
+    <% qual = offer.user.qualifications.where(:position_id => s.staff.position_id).first %>
+    <% if qual.nil? %>
+      <td style="border:none;">ERROR: User not qualified!</td>
+    <% else %>
+    <td style="border:none;"><%= qual.status %></td>
+    <td style="border:none;"><%= qual.count %></td>
+    <% end %>
+  <% end %>
+  <td style="border:none;"><%= render 'offers/approve', :s => s, :o => offer %></td>
+  <td style="border:none;"><%= render 'offers/deny', :s => s, :o => offer %></td>
+</tr>
+<% end %>
+</table>

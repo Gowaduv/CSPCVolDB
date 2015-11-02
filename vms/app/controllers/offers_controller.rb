@@ -1,6 +1,6 @@
 class OffersController < ApplicationController
   before_filter :authenticate_user!
-  load_and_authorize_resource 
+  load_and_authorize_resource :except => :update
 
   respond_to :html, :js, :json
 
@@ -57,19 +57,38 @@ class OffersController < ApplicationController
   end
 
   def update
+    set_offer
     Rails.logger.debug("offers:update user is #{current_user.id} #{offer_params[:user_id]}")
-    check_user_match(offer_params[:user_id]) or return
+    #check_user_match(offer_params[:user_id]) or redirect_to(action: listing) and return 
+    Rails.logger.debug("offers:update offer is #{@offer.inspect}")
     params = offer_params
+    params.delete :user_id  # the submitted user_id is the current_user.id for auth purposes
+    Rails.logger.debug(" params #{params.inspect}")
     @schedule = @offer.schedule
-    if params[:accepted].present? then
-      params[:accepted_user_id] = current_user.id
-      params[:accepted_timestamp] = Time.now
-      s = @offer.schedule
-      s.offer_id = @offer.id
-      s.save
+    Rails.logger.debug("params accepted is #{params[:accepted]}")
+    if params[:accepted] then
+      if params[:accepted].to_i == 1 then
+        Rails.logger.debug("accepted is 1, so adding!")
+        params[:accepted_user_id] = current_user.id
+        params[:accepted_timestamp] = Time.now
+        @schedule.offer_id = @offer.id
+      else
+        Rails.logger.debug("accepted is 0, so removing!")
+        # remove accepted info from offer and unset schedule id
+        params[:accepted_user_id] = nil
+        params[:accepted_timestamp] = nil
+        params[:accepted] = nil
+        @schedule.offer_id = nil        
+      end
+      params[:denied] = nil
+      params[:denied_user_id] = nil
+      params[:denied_timestamp] = nil
     elsif params[:denied].present? then
       params[:denied_user_id] = current_user.id
       params[:denied_timestamp] = Time.now
+      params[:accepted] = nil
+      params[:accepted_user_id] = nil
+      params[:accepted_timestamp] = nil
     elsif params[:revoked].present?
       if @offer.accepted? then
         params[:accepted] = nil
@@ -78,13 +97,35 @@ class OffersController < ApplicationController
       end      
       params[:revoke_timestamp] = Time.now
       @schedule.offer_id = nil
-      @schedule.save
     end
-    @offer.update(params)
-    respond_to do |format|
-      format.html { redirect_to action: index }
-      format.json { head :ok }
-      format.js
+    Rails.logger.debug("offer in update #{@offer.inspect}")
+    Rails.logger.debug("params in update #{params.inspect}")
+    @offer.assign_attributes(params)
+    Rails.logger.debug("offer in update after assign #{@offer.inspect}")
+    if can? :update, @offer then
+      Rails.logger.debug("offer:update can update")
+      # if we're approving a shift then find all other approved shifts and remove
+      if (@offer.accepted == 1 and @schedule.accepted_offer) then
+        old_accepted = @schedule.accepted_offer
+        old_accepted.accepted = nil
+        old_accepted.accepted_user_id = nil
+        old_accepted.accepted_timestamp = nil
+        old_accepted.save      
+      end
+      @schedule.save
+      @offer.save
+      respond_to do |format|
+        format.html { redirect_to action: index }
+        format.json { head :ok }
+        format.js
+      end
+    else
+      Rails.logger.debug("offer:update can NOT update")
+      respond_to do |format|
+        format.html { redirect_to action: index }
+        format.json { head :ok }
+        format.js
+      end      
     end
   end
 

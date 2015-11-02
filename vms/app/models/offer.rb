@@ -4,7 +4,7 @@ class Offer < ActiveRecord::Base
 
   scope :accepted, -> { where(accepted: true, :revoked => nil) }
   scope :revoked, -> { where(revoked: true, :accepted => nil) }
-  scope :pending, -> { where(accepted: false, revoked: false, denied: false) }
+  scope :pending, -> { where(accepted: nil, revoked: nil, denied: nil) }
   scope :denied, -> { where(denied: true) }
   scope :canceled_shift, -> { where(accepted: true, revoked: true) }
   # accepted+revoked = canceled shift;  revoked only = canceled offer;  denied = admin refused offer

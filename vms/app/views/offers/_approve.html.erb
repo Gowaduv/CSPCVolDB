@@ -1,2 +1,3 @@
 <!-- uses app/assets/javascripts/approve_offer.js.coffee.erb -->
-<%= link_to('Approve offer', "javascript:void(0);", { id: "approve_offer_"+s.get_user_offer_id(current_user).to_s, class: "approve_offer", data:{ user_id: current_user.id} } ) %>
+<% o = s.offers.pending.first if o.nil?%>
+<%= link_to('Approve offer', "javascript:void(0);", { id: "approve_offer_"+o.id.to_s, class: "approve_offer", data:{ user_id: o.user.id} } ) %>

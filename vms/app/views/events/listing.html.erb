@@ -39,7 +39,7 @@
         <% if current_user.present? %>
         <td><span id="schedule_offer_<%= s.id %>">
                 <% if s.has_offer_from?(current_user) %>
-                  <% if s.accepted_offer %>
+                  <% if s.has_accepted_offer_from?(current_user) %>
                      <%= render 'offers/cancel', :s => s %>
                   <% elsif s.has_denied_offer_from?(current_user) then %>
                     Offer Denied.  Thank you for your offer.
@@ -47,7 +47,9 @@
                     <%= render 'offers/pending', :s => s %>
                   <% end %>                   
                 <% else %>
-                  <% if current_user.qualified?(s.position.name) and !s.accepted_offer %>
+                  <% if s.accepted_offer %>
+                    <%= render 'offers/open_shift', :s => s %>
+                  <% elsif current_user.qualified?(s.position.name) and ! s.has_denied_offer_from?(current_user) %> <!-- denied offers include revoked offers -->
                     <%= render 'offers/signup', :s => s %>
                   <% end %>                 
                 <% end %>
@@ -57,20 +59,9 @@
         <td></td> <!-- shadow name -->
         <td></td> <!-- shadow info -->
         <td>
-          <span id="approve_offer_<%= s.id %>">
-          <% if current_user.present? and can? :approve, s.staff.event  %>
-            <% if s.has_offer_from?(current_user) or s.has_denied_offer_from?(current_user) %>
-              <%= render 'offers/approve', :s => s %>
-            <% elsif s.offers.count > 1 %>
-              Render link
-            <% else %>
-              Render single option            
-            <% end %>
-          <% end %>
-          </span>
-          <span id="deny_offer_<%= s.id %>">
-          <% if current_user.present? and s.has_offer_from?(current_user) and can? :approve, s.staff.event %>
-            <%= render 'offers/deny', :s => s %>
+          <span id="manage_offers_<%= s.id %>">
+          <% if !s.accepted_offer and can? :approve, s.staff.event  %>
+            <%= render 'offers/user_offers', :s => s %>
           <% end %>
           </span>
         </td>

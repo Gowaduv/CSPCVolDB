@@ -32,9 +32,15 @@ class Ability
      
     if user.has_any_role?({:name => :volunteer})
       Rails.logger.error("user #{user.inspect} has roles volunteer #{user.roles.inspect}")
-      can :create, Offer, :user_id => user.id
-      can :update, Offer, :user_id => user.id
-      cannot :update, Offer, { :revoked => nil }        
+      can :create, Offer, :user_id => user.id  # can create a new offer
+      can :update, Offer do |offer|  # can revoke an offer                                     
+        Rails.logger.debug("checking update for revoked #{offer.inspect} user #{user.inspect}")
+        if offer.revoked == 1 and offer.user_id == user.id then
+          true
+        else
+          false
+        end
+      end        
       can :listing, Event
     end
 

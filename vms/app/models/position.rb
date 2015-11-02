@@ -10,5 +10,9 @@ class Position < ActiveRecord::Base
   enum training: [ :no, :yes ]   # no is 0, yes is 1
   
   scope :entry_level, -> { where(:training => false) }
-                      
+
+  def training? 
+    return true if self.training == 'yes'
+    return false
+  end                      
 end

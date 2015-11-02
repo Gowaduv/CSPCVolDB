@@ -12,7 +12,7 @@ class Schedule < ActiveRecord::Base
   scope :accepted, -> { joins(:offers).where( offers: { accepted: 1, :revoked => nil}) }
   scope :revoked, -> { joins(:offers).where( offers: { revoked: 1}) }
   scope :denied, -> { joins(:offers).where( offers: { denied: 1}) }
-  scope :offered, -> { joins(:offers).where(offers: { accepted: 0, :revoked => nil, :denied => nil }) }
+  scope :offered, -> { joins(:offers).where(offers: { accepted: nil, :revoked => nil, :denied => nil }) }
   
   def info 
      return "#{self.event.name} - #{self.staff.position.name} - #{date} - #{self.staff.shift.start} "
@@ -27,6 +27,12 @@ class Schedule < ActiveRecord::Base
 
   def offered
     self.offers.where(:accepted => nil, :revoked => nil, :denied => nil)
+  end
+
+  def accepted?
+    Rails.logger.debug("accepted #{self.inspect} #{self.offers.accepted.inspect}")
+    return false if self.offers.accepted.empty?
+    return true
   end
 
   def revoked_offer?(offer_id)
@@ -44,6 +50,7 @@ class Schedule < ActiveRecord::Base
 
   def has_offer_from?(user)
     return false if self.offers.empty?
+    Rails.logger.debug("schedule has_offer_from? user #{user.inspect} #{self.offers.where(:revoked => nil).map(&:user_id).inspect} #{self.offers.where(:revoked => nil).map(&:user_id).include? user.id}")
     return true if self.offers.where(:revoked => nil).map(&:user_id).include? user.id
     return false
   end
@@ -51,6 +58,14 @@ class Schedule < ActiveRecord::Base
   def has_denied_offer_from?(user)
     return false if self.offers.empty?
     return true if self.offers.where(:denied => 1).map(&:user_id).include? user.id
+    return false
+  end
+
+  def has_accepted_offer_from?(user)
+    return false if self.offers.empty?
+    Rails.logger.debug("schedule has_accepted_offer_from #{user.inspect} #{self.offers.where(:accepted => 1, :revoked => nil).inspect}")
+    return true if self.offers.where(:accepted => 1, :revoked => nil).map(&:user_id).include? user.id
+    
     return false
   end
 

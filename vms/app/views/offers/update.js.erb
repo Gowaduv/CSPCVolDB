@@ -1,16 +1,24 @@
 $("#schedule_user_<%= @schedule.id %>").html("");
 <% if @schedule.accepted_offer %>
-$("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/cancel', :locals => { :s => @schedule }) %>");
-$("#approve_offer_<%= @offer.schedule.id %>").html("");
-$("#deny_offer_<%= @offer.schedule.id %>").html("");
+  <% if @schedule.accepted_offer.user == current_user %>
+    $("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/cancel', :locals => { :s => @schedule, :o => @offer }) %>");
+  <% else %>
+    $("#schedule_user_<%= @schedule.id %>").text("<%= @offer.user.username %>");
+    $("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/open_shift', :locals => { :s => @schedule }) %>");
+  <% end %>
 <% elsif @offer.revoked? %>
-$("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
-$("#approve_offer_<%= @offer.schedule.id %>").html("");
-$("#deny_offer_<%= @offer.schedule.id %>").html("");
+  $("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
+  $("#manage_offers_<%= @offer.schedule.id %>").html("");
 <% elsif @offer.denied? %>
-$("#schedule_offer_<%= @schedule.id %>").html("Offer Denied.  Thank you for your offer.");
-$("#approve_offer_<%= @offer.schedule.id %>").html("");
-$("#deny_offer_<%= @offer.schedule.id %>").html("");
+  $("#schedule_offer_<%= @schedule.id %>").html("Offer Denied.  Thank you for your offer.");
+<% elsif @schedule.has_offer_from?(current_user) %>
+  $("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/pending', :locals => { :s => @schedule }) %>");  
 <% else %>
-$("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
+  $("#schedule_offer_<%= @schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/signup', :locals => { :s => @schedule }) %>");
+<% end %>
+
+<% if can? :update, @offer %>
+  $("#manage_offers_<%= @offer.schedule.id %>").html("<%= escape_javascript(render :partial => 'offers/user_offers', :locals => { :s => @offer.schedule, :o => @offer }) %>");
+<% else %>
+  $("#manage_offers_<%= @offer.schedule.id %>").html("");
 <% end %>
